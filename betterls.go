@@ -33,8 +33,8 @@ func printFile(file fs.FileInfo, dirPath string) {
 	endColor()
 
 	startColor(brightYellow)
-	owner, group := getFileOwner(file, dirPath)
-	fmt.Printf("%s %s ", owner, group)
+	owner := getFileOwner(file, dirPath)
+	fmt.Printf("%s ", owner)
 	endColor()
 
 	// Align the sizes properly

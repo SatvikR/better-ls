@@ -10,7 +10,7 @@ import (
 	"golang.org/x/sys/windows"
 )
 
-func getFileOwner(file fs.FileInfo, dirPath string) (string, string) {
+func getFileOwner(file fs.FileInfo, dirPath string) string {
 
 	sd, err := windows.GetNamedSecurityInfo(
 		path.Join(dirPath, file.Name()),
@@ -26,21 +26,11 @@ func getFileOwner(file fs.FileInfo, dirPath string) (string, string) {
 		panic(err)
 	}
 
-	groupSID, _, err := sd.Owner()
-	if err != nil {
-		panic(err)
-	}
-
 	// Uses "" as system to look at the local system
 	account, _, _, err := ownerSID.LookupAccount("")
 	if err != nil {
 		panic(err)
 	}
 
-	group, _, _, err := groupSID.LookupAccount("")
-	if err != nil {
-		panic(err)
-	}
-
-	return account, group
+	return account
 }

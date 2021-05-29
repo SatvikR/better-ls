@@ -5,6 +5,34 @@
 
 package main
 
-func getFileOwner(file fs.FileInfo) (string, string) {
-	panic("unimplemented")
+import (
+	"fmt"
+	"io/fs"
+	"os"
+	"os/user"
+	"path"
+	"syscall"
+)
+
+func getFileOwner(file fs.FileInfo, dirPath string) string {
+	info, err := os.Stat(path.Join(dirPath, file.Name()))
+	if err != nil {
+		panic(err)
+	}
+
+	var uid int
+
+	if stat, ok := info.Sys().(*syscall.Stat_t); ok {
+		uid = int(stat.Uid)
+	} else {
+		panic("unable to get uid")
+	}
+
+	user, err := user.LookupId(fmt.Sprint(uid))
+	if err != nil {
+		panic(err)
+	}
+
+	return user.Name
+
 }
