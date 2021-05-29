@@ -4,10 +4,12 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/fs"
 	"io/ioutil"
-	"path"
+	"os"
+	"path/filepath"
 )
 
 var sizeLen int
@@ -25,13 +27,13 @@ func printFileName(file fs.FileInfo) {
 }
 
 // printFile will properly printout file info given a file object
-func printFile(file fs.FileInfo) {
+func printFile(file fs.FileInfo, dirPath string) {
 	startColor(brightCyan)
 	fmt.Printf("%s ", getPermissionString(file))
 	endColor()
 
 	startColor(brightYellow)
-	owner, group := getFileOwner(file)
+	owner, group := getFileOwner(file, dirPath)
 	fmt.Printf("%s %s ", owner, group)
 	endColor()
 
@@ -53,17 +55,23 @@ func printFile(file fs.FileInfo) {
 	newLine()
 }
 
-func main() {
-	newLine()
-
-	dir, err := ioutil.ReadDir(".")
+func printFiles(dirPath string) {
+	dir, err := ioutil.ReadDir(dirPath)
 	if err != nil {
 		panic(err)
 	}
 
+	absPath, err := filepath.Abs(dirPath)
+	if err != nil {
+		panic(err)
+	}
+
+	newLine()
+
 	dir = dir[:]
+
 	startColor(brightBlue)
-	fmt.Printf("Directory: %s", path.Dir("."))
+	fmt.Printf("Directory: %s", absPath)
 	endColor()
 	newLine()
 
@@ -72,8 +80,30 @@ func main() {
 	newLine()
 
 	for _, file := range dir {
-		printFile(file)
+		printFile(file, absPath)
 	}
 
 	newLine()
+
+}
+
+func main() {
+	flag.Parse()
+
+	dirPath := flag.Arg(0)
+	if dirPath == "" {
+		dirPath = "."
+	}
+
+	stat, err := os.Stat(dirPath)
+	if err != nil {
+		panic(err)
+	}
+	mode := stat.Mode()
+
+	if !mode.IsDir() {
+		panic("Not a directory")
+	}
+
+	printFiles(dirPath)
 }

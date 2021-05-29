@@ -5,14 +5,15 @@ package main
 
 import (
 	"io/fs"
+	"path"
 
 	"golang.org/x/sys/windows"
 )
 
-func getFileOwner(file fs.FileInfo) (string, string) {
+func getFileOwner(file fs.FileInfo, dirPath string) (string, string) {
 
 	sd, err := windows.GetNamedSecurityInfo(
-		file.Name(),
+		path.Join(dirPath, file.Name()),
 		windows.SE_FILE_OBJECT,
 		windows.OWNER_SECURITY_INFORMATION,
 	)
