@@ -26,7 +26,7 @@ func printFile(file *fs.FileInfo) {
 	}
 
 	// Fill in permission based on mode bits
-	for i := 0; i < 3; i++ {
+	for i := 2; i > -1; i-- {
 		if mode&(readBits<<(i*3)) != 0 {
 			permissions[i*3+1] = 'r'
 		}
