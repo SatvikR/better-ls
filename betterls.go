@@ -13,9 +13,9 @@ var sizeLen int
 
 func printFileName(file *fs.FileInfo) {
 	if (*file).IsDir() {
-		startColor(BrightYellow)
+		startColor(brightYellow)
 	} else {
-		startColor(BrightGreen)
+		startColor(brightGreen)
 	}
 
 	fmt.Printf("%s", (*file).Name())
@@ -25,7 +25,7 @@ func printFileName(file *fs.FileInfo) {
 
 // printFile will properly printout file info given a file object
 func printFile(file *fs.FileInfo) {
-	startColor(BrightCyan)
+	startColor(brightCyan)
 	fmt.Printf("%s ", getPermissionString(file))
 	endColor()
 
@@ -34,11 +34,11 @@ func printFile(file *fs.FileInfo) {
 		fmt.Print(" ")
 	}
 
-	startColor(Magenta)
+	startColor(magenta)
 	fmt.Printf("%d ", (*file).Size())
 	endColor()
 
-	startColor(Red)
+	startColor(red)
 	fmt.Printf("%s ", (*file).ModTime().Format("Jan 02 15:04"))
 	endColor()
 
