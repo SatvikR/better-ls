@@ -50,4 +50,6 @@ func main() {
 	for _, file := range dir {
 		printFile(&file)
 	}
+
+	fmt.Println("")
 }
