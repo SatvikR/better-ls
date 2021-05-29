@@ -1,6 +1,12 @@
 # Better ls
 
-A better version of ls
+<div align="center">
+  
+  ![image](https://user-images.githubusercontent.com/49799352/120059291-7083fe00-c005-11eb-93e8-9c26c933e6c0.png)
+
+  
+  A better version of ls
+</div>
 
 > Inspired by [ls](https://en.wikipedia.org/wiki/Ls) and [exa](https://github.com/ogham/exa)
 
