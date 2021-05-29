@@ -1,6 +1,27 @@
 # Better ls
 
-A better version of ls with more features.
+A better version of ls
+
+> Inspired by [ls](https://en.wikipedia.org/wiki/Ls) and [exa](https://github.com/ogham/exa)
+
+## Install
+
+```sh
+go get github.com/SatvikR/better-ls
+```
+
+## Build from source
+
+```sh
+# Clone repo
+git clone https://github.com/SatvikR/better-ls
+
+# Compile
+go build
+
+# Run (make sure add .exe on windows)
+./better-ls
+```
 
 ## License
 
