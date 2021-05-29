@@ -15,7 +15,7 @@ const (
 )
 
 // Parses the permission bits into a string
-func GetPermissionString(file *fs.FileInfo) string {
+func getPermissionString(file *fs.FileInfo) string {
 	permissions := []rune("----------")
 
 	mode := uint32((*file).Mode())
@@ -42,7 +42,7 @@ func GetPermissionString(file *fs.FileInfo) string {
 	return string(permissions)
 }
 
-func GetSizeStringLen(dir []fs.FileInfo) int {
+func getSizeStringLen(dir []fs.FileInfo) int {
 	l := 0
 
 	for _, f := range dir {

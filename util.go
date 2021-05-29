@@ -32,3 +32,7 @@ func startColor(color string) {
 func endColor() {
 	fmt.Print(Reset)
 }
+
+func newLine() {
+	fmt.Println("")
+}
