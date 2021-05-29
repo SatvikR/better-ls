@@ -15,6 +15,7 @@ go get github.com/SatvikR/better-ls
 ```sh
 # Clone repo
 git clone https://github.com/SatvikR/better-ls
+cd better-ls
 
 # Compile
 go build
