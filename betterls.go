@@ -7,39 +7,45 @@ import (
 	"fmt"
 	"io/fs"
 	"io/ioutil"
+	"path"
 )
 
 var sizeLen int
 
-func printFileName(file *fs.FileInfo) {
-	if (*file).IsDir() {
+func printFileName(file fs.FileInfo) {
+	if file.IsDir() {
 		startColor(brightYellow)
 	} else {
 		startColor(brightGreen)
 	}
 
-	fmt.Printf("%s", (*file).Name())
+	fmt.Printf("%s", file.Name())
 
 	endColor()
 }
 
 // printFile will properly printout file info given a file object
-func printFile(file *fs.FileInfo) {
+func printFile(file fs.FileInfo) {
 	startColor(brightCyan)
 	fmt.Printf("%s ", getPermissionString(file))
 	endColor()
 
+	startColor(brightYellow)
+	owner, group := getFileOwner(file)
+	fmt.Printf("%s %s ", owner, group)
+	endColor()
+
 	// Align the sizes properly
-	for i := 0; i < (sizeLen - len(fmt.Sprint((*file).Size()))); i++ {
+	for i := 0; i < (sizeLen - len(fmt.Sprint(file.Size()))); i++ {
 		fmt.Print(" ")
 	}
 
 	startColor(magenta)
-	fmt.Printf("%d ", (*file).Size())
+	fmt.Printf("%d ", file.Size())
 	endColor()
 
 	startColor(red)
-	fmt.Printf("%s ", (*file).ModTime().Format("Jan 02 15:04"))
+	fmt.Printf("%s ", file.ModTime().Format("Jan 02 15:04"))
 	endColor()
 
 	printFileName(file)
@@ -56,11 +62,17 @@ func main() {
 	}
 
 	dir = dir[:]
+	startColor(brightBlue)
+	fmt.Printf("Directory: %s", path.Dir("."))
+	endColor()
+	newLine()
 
 	sizeLen = getSizeStringLen(dir)
 
+	newLine()
+
 	for _, file := range dir {
-		printFile(&file)
+		printFile(file)
 	}
 
 	newLine()

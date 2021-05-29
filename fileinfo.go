@@ -15,12 +15,12 @@ const (
 )
 
 // Parses the permission bits into a string
-func getPermissionString(file *fs.FileInfo) string {
+func getPermissionString(file fs.FileInfo) string {
 	permissions := []rune("----------")
 
-	mode := uint32((*file).Mode())
+	mode := uint32(file.Mode())
 
-	if (*file).IsDir() {
+	if file.IsDir() {
 		permissions[0] = 'd'
 	}
 
