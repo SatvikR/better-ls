@@ -3,7 +3,10 @@
 
 package main
 
-import "io/fs"
+import (
+	"fmt"
+	"io/fs"
+)
 
 const (
 	readBits    uint32 = 0b100
@@ -11,6 +14,7 @@ const (
 	executeBits uint32 = 0b001
 )
 
+// Parses the permission bits into a string
 func GetPermissionString(file *fs.FileInfo) string {
 	permissions := []rune("----------")
 
@@ -36,4 +40,17 @@ func GetPermissionString(file *fs.FileInfo) string {
 	}
 
 	return string(permissions)
+}
+
+func GetSizeStringLen(dir []fs.FileInfo) int {
+	l := 0
+
+	for _, f := range dir {
+		sizeStringLen := len(fmt.Sprint(f.Size()))
+		if sizeStringLen > l {
+			l = sizeStringLen
+		}
+	}
+
+	return l
 }

@@ -9,9 +9,18 @@ import (
 	"io/ioutil"
 )
 
+var sizeLen int
+
 // printFile will properly printout file info given a file object
 func printFile(file *fs.FileInfo) {
-	fmt.Printf("%s %s\n", GetPermissionString(file), (*file).Name())
+	fmt.Printf("%s ", GetPermissionString(file))
+
+	for i := 0; i < (sizeLen - len(fmt.Sprint((*file).Size()))); i++ {
+		fmt.Print(" ")
+	}
+
+	fmt.Printf("%d ", (*file).Size())
+	fmt.Printf("%s\n", (*file).Name())
 }
 
 func main() {
@@ -19,6 +28,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	dir = dir[:]
+
+	sizeLen = GetSizeStringLen(dir)
 
 	for _, file := range dir {
 		printFile(&file)
