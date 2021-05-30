@@ -2,7 +2,7 @@
 
 <div align="center">
   
-  ![image](https://user-images.githubusercontent.com/49799352/120086885-d4570700-c097-11eb-8b98-2946dc4881aa.png)
+  ![Screenshot from 2021-05-29 17-09-15](https://user-images.githubusercontent.com/49799352/120087870-aaeea900-c0a0-11eb-8134-9fec067d609d.png)
 
   
   A better version of ls
