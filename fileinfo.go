@@ -27,15 +27,15 @@ func getPermissionString(file fs.FileInfo) string {
 	// Fill in permission based on mode bits
 	for i := 2; i > -1; i-- {
 		if mode&(readBits<<(i*3)) != 0 {
-			permissions[i*3+1] = 'r'
+			permissions[(3-i-1)*3+1] = 'r'
 		}
 
 		if mode&(writeBits<<(i*3)) != 0 {
-			permissions[i*3+2] = 'w'
+			permissions[(3-i-1)*3+2] = 'w'
 		}
 
 		if mode&(executeBits<<(i*3)) != 0 {
-			permissions[i*3+3] = 'x'
+			permissions[(3-i-1)*3+3] = 'x'
 		}
 	}
 
