@@ -6,10 +6,12 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"io/fs"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 )
@@ -29,13 +31,16 @@ func printFileName(file fs.FileInfo) {
 }
 
 // printFile will properly printout file info given a file object
-func printFile(file fs.FileInfo, dirPath string) {
+func printFile(file fs.FileInfo, dirPath string) error {
 	startColor(brightCyan)
 	fmt.Printf("%s ", getPermissionString(file))
 	endColor()
 
 	startColor(brightYellow)
-	owner := getFileOwner(file, dirPath)
+	owner, err := getFileOwner(file, dirPath)
+	if err != nil {
+		return err
+	}
 	fmt.Printf("%s ", owner)
 	endColor()
 
@@ -55,17 +60,33 @@ func printFile(file fs.FileInfo, dirPath string) {
 	printFileName(file)
 
 	newLine()
+
+	return nil
 }
 
-func printFiles(dirPath string) {
+func printFiles() error {
+	dirPath := flag.Arg(0)
+	if dirPath == "" {
+		dirPath = "."
+	}
+
+	stat, err := os.Stat(dirPath)
+	if err != nil {
+		return err
+	}
+	mode := stat.Mode()
+
+	if !mode.IsDir() {
+		return errors.New("not a directory")
+	}
 	dir, err := ioutil.ReadDir(dirPath)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	absPath, err := filepath.Abs(dirPath)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	newLine()
@@ -82,30 +103,27 @@ func printFiles(dirPath string) {
 	newLine()
 
 	for _, file := range dir {
-		printFile(file, absPath)
+		err := printFile(file, absPath)
+		if err != nil {
+			return err
+		}
 	}
 
 	newLine()
 
+	return nil
 }
 
 func main() {
+	log.SetPrefix("better-ls: ")
+	log.SetFlags(0)
+
 	flag.Parse()
 
-	dirPath := flag.Arg(0)
-	if dirPath == "" {
-		dirPath = "."
-	}
-
-	stat, err := os.Stat(dirPath)
+	err := printFiles()
 	if err != nil {
-		panic(err)
+		startColor(red)
+		log.Print(err)
+		endColor()
 	}
-	mode := stat.Mode()
-
-	if !mode.IsDir() {
-		panic("Not a directory")
-	}
-
-	printFiles(dirPath)
 }

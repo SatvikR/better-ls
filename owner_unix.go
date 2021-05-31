@@ -9,6 +9,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io/fs"
 	"os"
@@ -17,10 +18,10 @@ import (
 	"syscall"
 )
 
-func getFileOwner(file fs.FileInfo, dirPath string) string {
+func getFileOwner(file fs.FileInfo, dirPath string) (string, err) {
 	info, err := os.Stat(path.Join(dirPath, file.Name()))
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	var uid int
@@ -28,14 +29,14 @@ func getFileOwner(file fs.FileInfo, dirPath string) string {
 	if stat, ok := info.Sys().(*syscall.Stat_t); ok {
 		uid = int(stat.Uid)
 	} else {
-		panic("unable to get uid")
+		return "", errors.New("user cannot be found")
 	}
 
 	user, err := user.LookupId(fmt.Sprint(uid))
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
-	return user.Name
+	return user.Name, nil
 
 }
