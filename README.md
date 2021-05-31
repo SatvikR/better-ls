@@ -1,11 +1,11 @@
 # Better ls
 
 <div align="center">
-  
-  ![Screenshot from 2021-05-29 17-09-15](https://user-images.githubusercontent.com/49799352/120087870-aaeea900-c0a0-11eb-8134-9fec067d609d.png)
 
-  
-  A better version of ls
+![Screenshot from 2021-05-29 17-09-15](https://user-images.githubusercontent.com/49799352/120087870-aaeea900-c0a0-11eb-8134-9fec067d609d.png)
+
+A better version of ls
+
 </div>
 
 > Inspired by [ls](https://en.wikipedia.org/wiki/Ls) and [exa](https://github.com/ogham/exa)
@@ -29,6 +29,14 @@ go build
 # Run (make sure add .exe on windows)
 ./better-ls
 ```
+
+## Usage
+
+`better-ls [OPTIONS...] [DIRECTORY]`
+
+| Flag                | Usage                                 |
+| ------------------- | ------------------------------------- |
+| `-group-dirs-first` | output all the directories at the top |
 
 ## License
 

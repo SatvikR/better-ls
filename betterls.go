@@ -1,6 +1,6 @@
 // better-ls - A better version of ls
-//
 // Copyright (c) 2021, Satvik Reddy
+//
 // This is free software licensed under the BSD 2 Clause License
 
 package main
@@ -64,7 +64,7 @@ func printFile(file fs.FileInfo, dirPath string) error {
 	return nil
 }
 
-func printFiles() error {
+func printFiles(flags flagsT) error {
 	dirPath := flag.Arg(0)
 	if dirPath == "" {
 		dirPath = "."
@@ -89,9 +89,11 @@ func printFiles() error {
 		return err
 	}
 
-	newLine()
-
 	dir = dir[:]
+
+	handleFlags(dir, flags)
+
+	newLine()
 
 	startColor(brightBlue)
 	fmt.Printf("Directory: %s", absPath)
@@ -115,12 +117,20 @@ func printFiles() error {
 }
 
 func main() {
+	flags := flagsT{}
+
 	log.SetPrefix("better-ls: ")
 	log.SetFlags(0)
 
+	flags.groupDirsFirst = flag.Bool(
+		"group-dirs-first",
+		false,
+		"output all the directories at the top",
+	)
+
 	flag.Parse()
 
-	err := printFiles()
+	err := printFiles(flags)
 	if err != nil {
 		startColor(red)
 		log.Print(err)

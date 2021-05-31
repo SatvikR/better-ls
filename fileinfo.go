@@ -1,6 +1,6 @@
 // better-ls - A better version of ls
-//
 // Copyright (c) 2021, Satvik Reddy
+//
 // This is free software licensed under the BSD 2 Clause License
 
 package main
