@@ -1,8 +1,8 @@
 # Better ls
 
 <div align="center">
-
-![Screenshot from 2021-05-29 17-09-15](https://user-images.githubusercontent.com/49799352/120087870-aaeea900-c0a0-11eb-8134-9fec067d609d.png)
+  
+![Screenshot from 2021-05-31 18-24-11](https://user-images.githubusercontent.com/49799352/120253891-7106d980-c23d-11eb-905d-341ca19c5409.png)
 
 A better version of ls
 
