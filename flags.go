@@ -63,7 +63,7 @@ func convertToHumanReadable(size string) (string, error) {
 	b := int64(_b)
 
 	if b < unit {
-		return fmt.Sprintf("%d B", b), nil
+		return fmt.Sprintf("%d  B", b), nil
 	}
 	div, exp := int64(unit), 0
 	for n := b / unit; n >= unit; n /= unit {
