@@ -17,7 +17,7 @@ import (
 	"syscall"
 )
 
-func getFileOwner(file fs.FileInfo, dirPath string) (string, err) {
+func getFileOwner(file fs.FileInfo, dirPath string) (string, error) {
 	info, err := os.Stat(path.Join(dirPath, file.Name()))
 	if err != nil {
 		return "", err
