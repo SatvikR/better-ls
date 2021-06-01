@@ -6,7 +6,6 @@
 package main
 
 import (
-	"fmt"
 	"io/fs"
 )
 
@@ -44,11 +43,11 @@ func getPermissionString(file fs.FileInfo) string {
 	return string(permissions)
 }
 
-func getSizeStringLen(dir []fs.FileInfo) int {
+func getSizeStringLen(files []file) int {
 	l := 0
 
-	for _, f := range dir {
-		sizeStringLen := len(fmt.Sprint(f.Size()))
+	for _, f := range files {
+		sizeStringLen := len(f.size)
 		if sizeStringLen > l {
 			l = sizeStringLen
 		}

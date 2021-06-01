@@ -17,44 +17,72 @@ import (
 )
 
 var sizeLen int
+var absDirPath string
 
-func printFileName(file fs.FileInfo) {
-	if file.IsDir() {
+type file struct {
+	mode     string
+	owner    string
+	size     string
+	time     string
+	name     string
+	fsHandle fs.FileInfo
+}
+
+func constructFiles(dir []fs.FileInfo) ([]file, error) {
+	files := make([]file, len(dir))
+
+	for i, fileInfo := range dir {
+		owner, err := getFileOwner(fileInfo, absDirPath)
+		if err != nil {
+			return nil, err
+		}
+
+		files[i] = file{
+			mode:     getPermissionString(fileInfo),
+			owner:    owner,
+			size:     fmt.Sprint(fileInfo.Size()),
+			time:     fileInfo.ModTime().Format("Jan 02 15:04"),
+			name:     fileInfo.Name(),
+			fsHandle: fileInfo,
+		}
+	}
+
+	return files, nil
+}
+
+func printFileName(file file) {
+	if file.fsHandle.IsDir() {
 		startColor(brightYellow)
 	} else {
 		startColor(brightGreen)
 	}
 
-	fmt.Printf("%s", file.Name())
+	fmt.Printf("%s", file.name)
 
 	endColor()
 }
 
 // printFile will properly printout file info given a file object
-func printFile(file fs.FileInfo, dirPath string) error {
+func printFile(file file) error {
 	startColor(brightCyan)
-	fmt.Printf("%s ", getPermissionString(file))
+	fmt.Printf("%s ", file.mode)
 	endColor()
 
 	startColor(brightYellow)
-	owner, err := getFileOwner(file, dirPath)
-	if err != nil {
-		return err
-	}
-	fmt.Printf("%s ", owner)
+	fmt.Printf("%s ", file.owner)
 	endColor()
 
 	// Align the sizes properly
-	for i := 0; i < (sizeLen - len(fmt.Sprint(file.Size()))); i++ {
+	for i := 0; i < (sizeLen - len(file.size)); i++ {
 		fmt.Print(" ")
 	}
 
 	startColor(magenta)
-	fmt.Printf("%d ", file.Size())
+	fmt.Printf("%s ", file.size)
 	endColor()
 
 	startColor(red)
-	fmt.Printf("%s ", file.ModTime().Format("Jan 02 15:04"))
+	fmt.Printf("%s ", file.time)
 	endColor()
 
 	printFileName(file)
@@ -84,28 +112,36 @@ func printFiles(flags flagsT) error {
 		return err
 	}
 
-	absPath, err := filepath.Abs(dirPath)
+	absDirPath, err = filepath.Abs(dirPath)
 	if err != nil {
 		return err
 	}
 
 	dir = dir[:]
 
-	handleFlags(dir, flags)
+	files, err := constructFiles(dir)
+	if err != nil {
+		return err
+	}
+
+	err = handleFlags(files, flags)
+	if err != nil {
+		return err
+	}
 
 	newLine()
 
 	startColor(brightBlue)
-	fmt.Printf("Directory: %s", absPath)
+	fmt.Printf("Directory: %s", absDirPath)
 	endColor()
 	newLine()
 
-	sizeLen = getSizeStringLen(dir)
+	sizeLen = getSizeStringLen(files)
 
 	newLine()
 
-	for _, file := range dir {
-		err := printFile(file, absPath)
+	for _, file := range files {
+		err := printFile(file)
 		if err != nil {
 			return err
 		}
@@ -126,6 +162,12 @@ func main() {
 		"group-dirs-first",
 		false,
 		"output all the directories at the top",
+	)
+
+	flags.humanReadable = flag.Bool(
+		"human-readable",
+		false,
+		"list sizes in a human readable format",
 	)
 
 	flag.Parse()

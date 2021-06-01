@@ -37,6 +37,7 @@ go build
 | Flag                | Usage                                 |
 | ------------------- | ------------------------------------- |
 | `-group-dirs-first` | output all the directories at the top |
+| `-human-readable`   | list sizes in a human readable format |
 
 ## License
 
