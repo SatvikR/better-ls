@@ -54,7 +54,7 @@ func handleFlags(files []file, flags flagsT) error {
 }
 
 func convertToHumanReadable(size string) (string, error) {
-	const unit = 1000
+	const unit = 1024
 	_b, err := strconv.Atoi(size)
 	if err != nil {
 		return "", err
