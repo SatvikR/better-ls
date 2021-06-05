@@ -13,6 +13,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path"
 	"path/filepath"
 )
 
@@ -37,10 +38,18 @@ func constructFiles(dir []fs.FileInfo) ([]file, error) {
 			return nil, err
 		}
 
+		var fileSize int64
+
+		if fileInfo.IsDir() {
+			fileSize = getDirSize(path.Join(absDirPath, fileInfo.Name()))
+		} else {
+			fileSize = fileInfo.Size()
+		}
+
 		files[i] = file{
 			mode:     getPermissionString(fileInfo),
 			owner:    owner,
-			size:     fmt.Sprint(fileInfo.Size()),
+			size:     fmt.Sprint(fileSize),
 			time:     fileInfo.ModTime().Format("Jan 02 15:04"),
 			name:     fileInfo.Name(),
 			fsHandle: fileInfo,
