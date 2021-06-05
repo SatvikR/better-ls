@@ -15,6 +15,7 @@ A better version of ls
 ```sh
 go get github.com/SatvikR/better-ls
 ```
+Or install 64 bit binaries from the releases section.
 
 ## Build from source
 
