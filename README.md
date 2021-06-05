@@ -2,7 +2,7 @@
 
 <div align="center">
   
-![Screenshot from 2021-05-31 18-24-11](https://user-images.githubusercontent.com/49799352/120253891-7106d980-c23d-11eb-905d-341ca19c5409.png)
+<img width="1078" alt="better-ls screenshot" src="https://user-images.githubusercontent.com/49799352/120881575-f7495580-c586-11eb-8238-4c1d55ed8106.png">
 
 A better version of ls
 
@@ -38,6 +38,7 @@ go build
 | ------------------- | ------------------------------------- |
 | `-group-dirs-first` | output all the directories at the top |
 | `-human-readable`   | list sizes in a human readable format |
+| `-h`                | View help message                     |
 
 ## License
 
